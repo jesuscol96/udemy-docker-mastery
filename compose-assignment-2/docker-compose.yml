@@ -2,10 +2,8 @@ version: "2"
 
 services:
     drupal:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        image: drupal-custom
+        image: custom-drupal
+        build: .
         container_name: drupal
         volumes:
           - drupal-modules:/var/www/html/modules

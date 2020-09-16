@@ -1,22 +1,23 @@
 version: "2"
 
-drupal:
-    image: drupal:8.8.2
+services:
+    drupal:
+        image: drupal:8.8.2
+        volumes:
+          -drupal_modules:/var/www/html/modules
+          -drupal_profiles:/var/www/html/profiles
+          -drupal_themes:/var/www/html/themes
+          -drupal_sites:/var/www/html/sites
+        ports:
+            - "8000:80"
+
+    drupal_db:
+        image: postgres:12.1
+        environment:
+            - POSTGRES_PASSWORD=test12345
+
     volumes:
-      -drupal_modules:/var/www/html/modules
-      -drupal_profiles:/var/www/html/profiles
-      -drupal_themes:/var/www/html/themes
-      -drupal_sites:/var/www/html/sites
-    ports:
-        - "8000:80"
-
-drupal_db:
-    image: postgres:12.1
-    environment:
-        - POSTGRES_PASSWORD=test12345
-
-volumes:
-    drupal_modules:
-    drupal_profiles:
-    drupal_themes:
-    drupal_sites:
+        drupal_modules:
+        drupal_profiles:
+        drupal_themes:
+        drupal_sites:

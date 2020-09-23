@@ -1,0 +1,44 @@
+version: "3.1"
+
+services:
+    drupal:
+        image: drupal:8.8.2
+        container_name: drupal
+        volumes:
+          - drupal-modules:/var/www/html/modules
+          - drupal-profiles:/var/www/html/profiles
+          - drupal-themes:/var/www/html/themes
+          - drupal-sites:/var/www/html/sites
+        ports:
+            - "8000:80"
+
+    drupal_db:
+        image: postgres:12.1
+        container_name: drupal_db
+        secrets:
+            - psql_pswd
+        environment:
+            - POSTGRES_PASSWORD_FILE=/run/secrets/psql_pswd
+        volumes:
+            - drupal_db_vol:/var/lib/postgresql/data
+        deploy:
+          mode: replicated
+          replicas: 2
+          restart_policy:
+            condition: on-failure
+            delay: 10s
+            max_attempts: 3
+            window: 120s
+          placement:
+            constraints: [node.role == manager]
+
+secrets:
+    psql_pswd:
+        external: true
+
+volumes:
+    drupal-modules:
+    drupal-profiles:
+    drupal-themes:
+    drupal-sites:
+    drupal_db_vol:

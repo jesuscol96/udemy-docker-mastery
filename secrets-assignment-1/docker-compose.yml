@@ -24,7 +24,7 @@ services:
           - drupal_db_vol:/var/lib/postgresql/data
         deploy:
             mode: replicated
-            replicas: 2
+            replicas: 1
 
 volumes:
     drupal-modules:
